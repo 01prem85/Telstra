@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Telstra</string>
+    <string name="feed_image_des">Feed image</string>
 </resources>
