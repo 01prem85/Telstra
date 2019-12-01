@@ -41,7 +41,12 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
         } else {
             holder.tvName.setText(feedRows.get(position).getTitle());
             holder.tvDescription.setText(feedRows.get(position).getDescription());
-            Picasso.get().load(feedRows.get(position).getImageHref()).into(holder.ivFeed);
+            if(feedRows.get(position).getImageHref() != null){
+                Picasso.get().load(feedRows.get(position).getImageHref()).error(R.drawable.ic_error_loading).into(holder.ivFeed);
+            } else {
+                holder.ivFeed.setVisibility(View.GONE);
+            }
+
         }
     }
 
