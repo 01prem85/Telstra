@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Telstra</string>
     <string name="feed_image_des">Feed image</string>
+    <string name="network_error_msg">No internet available!</string>
 </resources>

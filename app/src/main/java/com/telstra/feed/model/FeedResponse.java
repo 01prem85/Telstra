@@ -14,6 +14,16 @@ public class FeedResponse {
     @Expose
     private List<FeedRow> rows = null;
 
+    private String errorMsg = null;
+
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
+    }
+
     public String getTitle() {
         return title;
     }

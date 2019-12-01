@@ -1,5 +1,7 @@
 package com.telstra.feed.repository;
 
+import android.content.Context;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.telstra.feed.model.FeedResponse;
@@ -14,13 +16,13 @@ public class FeedRepository {
     private FeedApi feedApi;
     private MutableLiveData<FeedResponse> feedData;
 
-    private FeedRepository(){
-        feedApi = RetrofitService.createService(FeedApi.class);
+    private FeedRepository(Context context){
+        feedApi = RetrofitService.createService(FeedApi.class, context);
     }
 
-    public static FeedRepository getInstance(){
+    public static FeedRepository getInstance(Context context){
         if (feedRepository == null){
-            feedRepository = new FeedRepository();
+            feedRepository = new FeedRepository(context);
         }
         return feedRepository;
     }
@@ -37,7 +39,10 @@ public class FeedRepository {
 
             @Override
             public void onFailure(Call<FeedResponse> call, Throwable t) {
-                feedData.setValue(null);
+                // set and send error message to ui
+                FeedResponse feedResponse = new FeedResponse();
+                feedResponse.setErrorMsg(t.getMessage());
+                feedData.setValue(feedResponse);
             }
         });
         return feedData;

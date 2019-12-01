@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.telstra.feed.adapter.FeedAdapter;
 import com.telstra.feed.model.FeedResponse;
@@ -15,7 +16,6 @@ import com.telstra.feed.model.FeedRow;
 import com.telstra.feed.viewmodel.FeedViewModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,26 +34,35 @@ public class MainActivity extends AppCompatActivity {
         mSwipeRefreshLayout = findViewById(R.id.swipeToRefresh);
 
         mFeedViewModel = ViewModelProviders.of(this).get(FeedViewModel.class);
-        mFeedViewModel.init();
-        mFeedViewModel.getFeedRepository().observe(this, this::updateAdapterData);
+        if(mFeedViewModel.getFeedRepository() != null) {
+            mFeedViewModel.getFeedRepository().observe(this, this::updateAdapterData);
+        } else {
+            Toast.makeText(this, getString(R.string.network_error_msg), Toast.LENGTH_SHORT).show();
+        }
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
             mSwipeRefreshLayout.setRefreshing(true);
-            mFeedViewModel.getFeedRepository().observe(MainActivity.this, feedResponse -> {
-                updateAdapterData(feedResponse);
+            if(mFeedViewModel.getFeedRepository() != null) {
+                mFeedViewModel.getFeedRepository().observe(MainActivity.this, feedResponse -> {
+                    updateAdapterData(feedResponse);
+                    mSwipeRefreshLayout.setRefreshing(false);
+                });
+            } else {
+                Toast.makeText(this, getString(R.string.network_error_msg), Toast.LENGTH_SHORT).show();
                 mSwipeRefreshLayout.setRefreshing(false);
-            });
+            }
         });
 
         setupRecyclerView();
     }
 
     private void updateAdapterData(FeedResponse feedResponse){
-        List<FeedRow> feedRowList = feedResponse.getRows();
-        if(feedRowList != null){
+        if(feedResponse.getErrorMsg() != null){
+            Toast.makeText(this, feedResponse.getErrorMsg(), Toast.LENGTH_SHORT).show();
+        } else {
             feedRowArrayList.clear();
             setTitle(feedResponse.getTitle());
-            feedRowArrayList.addAll(feedRowList);
+            feedRowArrayList.addAll(feedResponse.getRows());
             mFeedAdapter.notifyDataSetChanged();
         }
     }
