@@ -15,7 +15,7 @@ public class RetrofitClientInterceptor implements Interceptor {
 
     private Context mContext;
 
-    public RetrofitClientInterceptor(Context context) {
+    RetrofitClientInterceptor(Context context) {
         mContext = context;
     }
 

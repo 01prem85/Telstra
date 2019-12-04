@@ -41,12 +41,10 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
         } else {
             holder.tvName.setText(feedRows.get(position).getTitle());
             holder.tvDescription.setText(feedRows.get(position).getDescription());
-            if(feedRows.get(position).getImageHref() != null){
-                Picasso.get().load(feedRows.get(position).getImageHref()).error(R.drawable.ic_error_loading).into(holder.ivFeed);
-            } else {
-                holder.ivFeed.setVisibility(View.GONE);
-            }
-
+            Picasso.get().load(feedRows.get(position).getImageHref())
+                    .placeholder(R.drawable.ic_default_image)
+                    .error(R.drawable.ic_error_loading)
+                    .into(holder.ivFeed);
         }
     }
 
@@ -55,14 +53,14 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
         return feedRows.size();
     }
 
-    public class FeedViewHolder extends RecyclerView.ViewHolder {
+    class FeedViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvName;
         TextView tvDescription;
         ImageView ivFeed;
         View layoutView;
 
-        public FeedViewHolder(@NonNull View itemView) {
+        FeedViewHolder(@NonNull View itemView) {
             super(itemView);
             layoutView = itemView.findViewById(R.id.feed_item_layout);
             tvName = itemView.findViewById(R.id.tv_title);

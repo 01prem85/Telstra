@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
             mRecyclerView.setAdapter(mFeedAdapter);
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-            mRecyclerView.setNestedScrollingEnabled(true);
         } else {
             mFeedAdapter.notifyDataSetChanged();
         }

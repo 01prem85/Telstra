@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.telstra.feed.util.Constant.BASE_URL;
 
-public class RetrofitService {
+class RetrofitService {
 
     private static Retrofit retrofit;
 
@@ -25,7 +25,7 @@ public class RetrofitService {
         return retrofit;
     }
 
-    public static <S> S createService(Class<S> serviceClass, Context context) {
+    static <S> S createService(Class<S> serviceClass, Context context) {
         return getRetrofitInstance(context).create(serviceClass);
     }
 }
