@@ -63,18 +63,14 @@ public class MainActivity extends AppCompatActivity {
             feedRowArrayList.clear();
             setTitle(feedResponse.getTitle());
             feedRowArrayList.addAll(feedResponse.getRows());
-            mFeedAdapter.notifyDataSetChanged();
+            setupRecyclerView();
         }
     }
 
     private void setupRecyclerView() {
-        if (mFeedAdapter == null) {
-            mFeedAdapter = new FeedAdapter(MainActivity.this, feedRowArrayList);
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-            mRecyclerView.setAdapter(mFeedAdapter);
-            mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        } else {
-            mFeedAdapter.notifyDataSetChanged();
-        }
+        mFeedAdapter = new FeedAdapter(MainActivity.this, feedRowArrayList);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(mFeedAdapter);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 }
