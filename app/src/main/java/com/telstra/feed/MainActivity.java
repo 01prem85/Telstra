@@ -1,6 +1,7 @@
 package com.telstra.feed;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.telstra.feed.adapter.FeedAdapter;
+import com.telstra.feed.databinding.ActivityMainBinding;
 import com.telstra.feed.model.FeedResponse;
 import com.telstra.feed.model.FeedRow;
 import com.telstra.feed.viewmodel.FeedViewModel;
@@ -19,19 +21,20 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    RecyclerView mRecyclerView;
-    FeedAdapter mFeedAdapter;
-    FeedViewModel mFeedViewModel;
-    SwipeRefreshLayout mSwipeRefreshLayout;
-    ArrayList<FeedRow> feedRowArrayList = new ArrayList<>();
+    private RecyclerView mRecyclerView;
+    private FeedViewModel mFeedViewModel;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private ArrayList<FeedRow> feedRowArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mRecyclerView = findViewById(R.id.rv_feed);
-        mSwipeRefreshLayout = findViewById(R.id.swipeToRefresh);
+        ActivityMainBinding activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
+        mRecyclerView = activityMainBinding.rvFeed;
+        mSwipeRefreshLayout = activityMainBinding.swipeToRefresh;
 
         mFeedViewModel = ViewModelProviders.of(this).get(FeedViewModel.class);
         if(mFeedViewModel.getFeedRepository() != null) {
@@ -68,9 +71,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView() {
-        mFeedAdapter = new FeedAdapter(MainActivity.this, feedRowArrayList);
+        FeedAdapter feedAdapter = new FeedAdapter(MainActivity.this, feedRowArrayList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(mFeedAdapter);
+        mRecyclerView.setAdapter(feedAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 }
